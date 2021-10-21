@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Memory used: "`free -m | grep Mem | tr -s " " "-" | cut -d "-" -f 3` >> /home/`date +%Y%m%d"-"%H`.txt
+echo "Memory free: "`free -m | grep Mem | tr -s " " "-" | cut -d "-" -f 4` >> /home/`date +%Y%m%d"-"%H`.txt
+echo "CPU: "`top -b -n 1|grep Cpu | cut -d " " -f 5` >> /home/`date +%Y%m%d"-"%H`.txt
+echo "Uptime: "`top -b -n 1|grep top | grep up | cut -d " " -f 5,6` >> /home/`date +%Y%m%d"-"%H`.txt
+echo "Disk used: "`df -h | grep "/$" | tr -s " " "*" | cut -d "*" -f 5` >> /home/`date +%Y%m%d"-"%H`.txt

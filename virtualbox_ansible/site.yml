@@ -1,0 +1,24 @@
+- hosts: destination-group
+  become: yes
+  tasks:
+    - name: Install VB in Ubuntu
+      ansible.builtin.shell: |
+        wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+        wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib"
+        sudo apt update -y
+        sudo apt install virtualbox-6.1 -y
+      when:
+        - ansible_distribution == "Ubuntu"
+      tags: ubuntu-vb
+    - name: Install VB in RedHat
+      ansible.builtin.shell: |
+        yum update -y
+        yum install -y kernel-devel kernel-headers gcc make perl
+        wget https://www.virtualbox.org/download/oracle_vbox.asc
+        rpm --import oracle_vbox.asc
+        wget http://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo -O /etc/yum.repos.d/virtualbox.repo
+        yum install -y VirtualBox-6.1 
+      when:
+        - ansible_os_family == "RedHat"
+      tags: redhat-vb
